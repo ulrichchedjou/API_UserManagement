@@ -23,11 +23,11 @@ public class UserController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    // Explicit constructor with UserMapper
+    // Explicit constructor
     public UserController(UserService userService, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.jwtService = jwtService;
         this.userService = userService;
-        this.authenticationManager = null;
+        this.authenticationManager = authenticationManager;
     }
     @GetMapping("/all")
     @Operation(summary = "Get all users", description = "Retrieve a list of all users")
