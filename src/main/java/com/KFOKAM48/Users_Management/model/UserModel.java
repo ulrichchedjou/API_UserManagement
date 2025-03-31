@@ -71,7 +71,7 @@ public class UserModel implements UserDetails {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Userid;
 
     private String name;
 
@@ -88,11 +88,11 @@ public class UserModel implements UserDetails {
     private LocalDateTime createdAt;
 
     public Long getId() {
-        return id;
+        return Userid;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.Userid = id;
     }
 
     public String getEmail() {

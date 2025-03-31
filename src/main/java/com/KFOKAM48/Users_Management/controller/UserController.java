@@ -63,4 +63,18 @@ public class UserController {
         String jwt = jwtService.generateToken(user);
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update user", description = "Update user information by ID")
+    public ResponseEntity<UserModel> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
+        UserModel updatedUser = userService.updateUser(userId, userDTO);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete user", description = "Delete a user by their ID")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
 }
