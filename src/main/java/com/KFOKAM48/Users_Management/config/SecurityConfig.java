@@ -27,12 +27,15 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/users/register").permitAll()
-                .requestMatchers("/api/users/login").permitAll()
-                .requestMatchers("/api/users/all").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/api/v1/auth/**", 
+                                 "/api/users/register", 
+                                 "/api/users/login", 
+                                 "/api/users/all", 
+                                 "/v3/api-docs/**", 
+                                 "/swagger-ui/**", 
+                                 "/swagger-ui.html").permitAll()
+                    .anyRequest()
+                    .authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

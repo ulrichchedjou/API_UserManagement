@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,10 +27,17 @@ public class UserService implements UserDetailsService {
             throw new UserAlreadyExistsException("Email already registered");
         }
         
+        // Set a default role if not provided
+        String role = (userDTO.getRole() != null && !userDTO.getRole().isEmpty()) 
+                ? userDTO.getRole() 
+                : "USER";
+        
         UserModel user = UserModel.builder()
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
+                .role(role)
+                .createdAt(LocalDateTime.now())
                 .build();
         
         return userRepository.save(user);
@@ -60,6 +69,9 @@ public class UserService implements UserDetailsService {
         }
         if(userDTO.getPassword() != null) {
             existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        if(userDTO.getRole() != null) {
+            existingUser.setRole(userDTO.getRole());
         }
 
         return userRepository.save(existingUser);

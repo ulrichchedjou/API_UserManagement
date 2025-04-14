@@ -44,6 +44,11 @@ public class UserController {
     @PostMapping("/register")
     @Operation(summary = "Register a new user", description = "Create a new user account")
     public ResponseEntity<JwtAuthenticationResponse> register(@RequestBody UserDTO request) {
+        // Set default role if not provided
+        if (request.getRole() == null || request.getRole().isEmpty()) {
+            request.setRole("USER");
+        }
+        
         UserModel user = userService.createUser(request);
         String jwt = jwtService.generateToken(user);
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,14 +49,20 @@ public class AuthController {
     }
     
 
-    @GetMapping("/register")
+    @PostMapping("/register")
     @Operation(summary = "Register a new user", description = "Create a new user account")
-    public ResponseEntity<JwtAuthenticationResponse> register(@RequestBody SignupRequest request) {
+    public ResponseEntity<JwtAuthenticationResponse> register(@RequestBody @Valid SignupRequest request) {
         // Convert SignupRequest to UserDTO
         UserDTO userDTO = new UserDTO();
         userDTO.setName(request.getName());
         userDTO.setEmail(request.getEmail());
         userDTO.setPassword(request.getPassword());
+        
+        // Use the role from request if provided, otherwise set default role
+        String role = (request.getRole() != null && !request.getRole().isEmpty()) 
+                ? request.getRole() 
+                : "USER";
+        userDTO.setRole(role);
 
         UserModel user = userService.createUser(userDTO);
         String jwt = jwtService.generateToken(user);
@@ -64,7 +71,7 @@ public class AuthController {
 
     @PutMapping("/update/{id}")
     @Operation(summary = "Update a user", description = "Update user details by ID")
-    public ResponseEntity<UserModel> updateUser(@PathVariable Long Userid, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserModel> updateUser(@PathVariable Long Userid, @Valid @RequestBody UserDTO userDTO) {
         UserModel updatedUser = userService.updateUser(Userid, userDTO);
         return ResponseEntity.ok(updatedUser);
     }
@@ -78,7 +85,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Login a user", description = "Authenticate a user and return a JWT token")
-    public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody @Valid LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),

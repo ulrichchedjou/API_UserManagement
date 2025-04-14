@@ -36,9 +36,9 @@ public class UserDTO {
     @NotBlank
     private String role;
 
-    @NotBlank
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private String createdAt;
+    //@NotBlank
+    //@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    //private String createdAt;
 
 
     public Long getId() {
@@ -49,10 +49,6 @@ public class UserDTO {
         this.Userid = id;
     }
 
-
-    public String getName() {
-        return name;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -82,5 +78,15 @@ public class UserDTO {
         this.role = role;
     }
 
-    
+    public Long getUserid() {
+        return Userid;
+    }
+
+    public void setUserid(Long userid) {
+        Userid = userid;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

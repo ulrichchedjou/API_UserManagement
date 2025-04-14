@@ -1,5 +1,7 @@
 package com.KFOKAM48.Users_Management.DTOs;
 
+import org.springframework.cglib.core.Local;
+
 import java.time.LocalDateTime;
 
 /**
@@ -11,18 +13,20 @@ public class UserResponse {
     private String email;
     private String role;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     
     // Default constructor
     public UserResponse() {
     }
     
     // Constructor with all fields
-    public UserResponse(Long id, String name, String email, String role, LocalDateTime createdAt) {
+    public UserResponse(Long id, String name, String email, String role, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
     
     // Getters and setters
@@ -64,5 +68,13 @@ public class UserResponse {
     
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
